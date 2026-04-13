@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:16
+    container_name: cashback-db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: cashbackdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: cashback-api
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/cashbackdb
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
