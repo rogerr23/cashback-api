@@ -2,8 +2,8 @@ import sqlalchemy
 from datetime import datetime
 from app.database import metadata
 
-consultas = sqlalchemy.Table(
-    "consultas",
+cashback = sqlalchemy.Table(
+    "cashback",
     metadata,
     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
     sqlalchemy.Column("ip", sqlalchemy.String(45), nullable=False, index=True),
@@ -12,5 +12,5 @@ consultas = sqlalchemy.Table(
     sqlalchemy.Column("desconto", sqlalchemy.Float, nullable=False),
     sqlalchemy.Column("valor_final", sqlalchemy.Float, nullable=False),
     sqlalchemy.Column("cashback", sqlalchemy.Float, nullable=False),
-    sqlalchemy.Column("criado_em", sqlalchemy.DateTime, default=datetime.utcnow),
+    sqlalchemy.Column("criacao", sqlalchemy.DateTime, default=datetime.utcnow),
 )

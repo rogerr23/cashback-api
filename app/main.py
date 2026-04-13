@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 import os
 
 from app.database import database, metadata, engine
-from app.controllers.cashback import router as cashback_router
+from app.controllers.cashback_controller import router as cashback_router
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")
 
