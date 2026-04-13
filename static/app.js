@@ -47,7 +47,7 @@ async function carregarHistorico() {
       <td>${(r.desconto * 100).toFixed(0)}%</td>
       <td>${moeda(r.valor_final)}</td>
       <td><strong>${moeda(r.cashback)}</strong></td>
-      <td>${new Date(r.criado_em).toLocaleDateString("pt-BR")}</td>
+      <td>${new Date(r.criacao + "Z").toLocaleDateString("pt-BR")}</td>
     </tr>`)
     .join("");
 }
