@@ -1,4 +1,4 @@
-# 💰 Cashback API
+# Cashback API
 
 API para cálculo de cashback com frontend estático, feita com **FastAPI** + **PostgreSQL**.
 
@@ -13,20 +13,21 @@ API para cálculo de cashback com frontend estático, feita com **FastAPI** + **
 
 ```
 app/
-├── main.py              # Entrada da aplicação
-├── database.py          # Conexão com o banco
+├── main.py                            # Entrada da aplicação
+├── core/
+│   └── database.py                    # Conexão com o banco
 ├── models/
-│   └── consulta.py      # Tabela do banco
+│   └── cashback.py                    # Tabela do banco
 ├── schemas/
-│   └── dados_compra.py  # Validação de entrada
+│   └── cashback_request.py            # Validação de entrada
 ├── services/
-│   └── cashback_service.py  # Cálculo do cashback
+│   └── cashback_service.py            # Cálculo do cashback
 └── controllers/
-    └── cashback_controller.py  # Rotas da API
+    └── cashback_controller.py         # Rotas da API
 static/
-├── index.html           # Frontend
-├── style.css            # Estilos
-└── app.js               # JavaScript
+├── index.html                         # Frontend
+├── style.css                          # Estilos
+└── app.js                             # JavaScript
 ```
 
 ## Endpoints
