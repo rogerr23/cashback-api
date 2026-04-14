@@ -5,8 +5,8 @@ from fastapi.responses import FileResponse
 from contextlib import asynccontextmanager
 import os
 
-from app.database import database, metadata, engine
-from app.controllers.cashback_controller import router as cashback_router
+from app.core.database import database, metadata, engine
+from app.controllers.cashback_controller import router
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")
 
@@ -28,13 +28,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(cashback_router)
+app.include_router(router)
 
-# Serve arquivos estáticos (CSS, JS)
+
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
-# Serve o index.html na raiz
 @app.get("/")
-async def serve_frontend():
+async def pagina_inicial():
     return FileResponse(os.path.join(STATIC_DIR, "index.html"))

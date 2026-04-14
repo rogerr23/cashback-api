@@ -1,8 +1,8 @@
 import sqlalchemy
 from datetime import datetime
-from app.database import metadata
+from app.core.database import metadata
 
-cashback = sqlalchemy.Table(
+consultas = sqlalchemy.Table(
     "cashback",
     metadata,
     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),

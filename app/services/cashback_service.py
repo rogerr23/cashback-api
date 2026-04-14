@@ -1,15 +1,18 @@
-def calcular_cashback(valor_compra: float, desconto: float, tipo_cliente: str) -> dict:
-    """Aplica as regras de negócio do cashback."""
+def calcular_cashback(valor_compra, desconto, tipo_cliente):
+
     valor_final = valor_compra * (1 - desconto)
+
     cashback_base = valor_final * 0.05
 
-    cashback_com_bonus = (
-        cashback_base * 1.10 if tipo_cliente.upper() == "VIP" else cashback_base
-    )
+    if tipo_cliente.upper() == "VIP":
+        cashback_com_bonus = cashback_base * 1.10
+    else:
+        cashback_com_bonus = cashback_base
 
-    cashback_final = (
-        cashback_com_bonus * 2 if valor_final > 500 else cashback_com_bonus
-    )
+    if valor_final > 500:
+        cashback_final = cashback_com_bonus * 2
+    else:
+        cashback_final = cashback_com_bonus
 
     return {
         "valor_final": round(valor_final, 2),

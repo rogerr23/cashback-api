@@ -1,21 +1,27 @@
 from fastapi import APIRouter, Request
 from datetime import datetime
 
-from app.database import database
-from app.models.cashback import cashback
-from app.schemas.cashback_request import cashback_request
+from app.core.database import database
+from app.models.cashback import consultas
+from app.schemas.cashback_request import CashbackRequest
 from app.services.cashback_service import calcular_cashback
-from app.utils.request import get_client_ip
 
 router = APIRouter(prefix="/api")
 
 
+def get_ip(request: Request):
+    forwarded = request.headers.get("X-Forwarded-For")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.client.host
+
+
 @router.post("/calcular")
-async def calcular(request: Request, body: cashback_request):
-    ip = get_client_ip(request)
+async def calcular(request: Request, body: CashbackRequest):
+    ip = get_ip(request)
     resultado = calcular_cashback(body.valor_compra, body.desconto, body.tipo_cliente)
 
-    query = cashback.insert().values(
+    query = consultas.insert().values(
         ip=ip,
         tipo_cliente=body.tipo_cliente.upper(),
         valor_compra=body.valor_compra,
@@ -31,11 +37,11 @@ async def calcular(request: Request, body: cashback_request):
 
 @router.get("/historico")
 async def historico(request: Request):
-    ip = get_client_ip(request)
+    ip = get_ip(request)
     query = (
-        cashback.select()
-        .where(cashback.c.ip == ip)
-        .order_by(cashback.c.criacao.desc())
+        consultas.select()
+        .where(consultas.c.ip == ip)
+        .order_by(consultas.c.criacao.desc())
         .limit(50)
     )
     rows = await database.fetch_all(query)

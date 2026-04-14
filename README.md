@@ -1,38 +1,41 @@
 # 💰 Cashback API
 
-API para cálculo de cashback com frontend estático, desenvolvida com **FastAPI** + **PostgreSQL**.
+API para cálculo de cashback com frontend estático, feita com **FastAPI** + **PostgreSQL**.
 
 ## Regras de Negócio
 
 - Cashback base: **5%** sobre o valor final (após descontos)
 - Clientes **VIP**: bônus de **+10%** sobre o cashback base
-- Compras acima de **R$ 500** (valor final): cashback é **dobrado**
-- Ordem de cálculo: base → bônus VIP → promoção
+- Compras acima de **R$ 500** (valor final): cashback **dobrado**
+- Ordem: base → bônus VIP → promoção
 
-## Arquitetura
+## Estrutura
 
 ```
 app/
-├── main.py              # Entrada da aplicação (FastAPI + static files)
-├── database.py          # Conexão com PostgreSQL
-├── models/              # Tabelas (SQLAlchemy)
-├── schemas/             # Validação de entrada (Pydantic)
-├── services/            # Regras de negócio
-├── controllers/         # Rotas/endpoints
-└── utils/               # Funções auxiliares
+├── main.py              # Entrada da aplicação
+├── database.py          # Conexão com o banco
+├── models/
+│   └── consulta.py      # Tabela do banco
+├── schemas/
+│   └── dados_compra.py  # Validação de entrada
+├── services/
+│   └── cashback_service.py  # Cálculo do cashback
+└── controllers/
+    └── cashback_controller.py  # Rotas da API
 static/
 ├── index.html           # Frontend
 ├── style.css            # Estilos
-└── app.js               # JavaScript puro
+└── app.js               # JavaScript
 ```
 
 ## Endpoints
 
-| Método | Rota             | Descrição                          |
-|--------|------------------|------------------------------------|
-| GET    | `/`              | Frontend (calculadora)             |
-| POST   | `/api/calcular`  | Calcula cashback e salva no banco  |
-| GET    | `/api/historico` | Histórico de consultas por IP      |
+| Método | Rota             | Descrição                         |
+|--------|------------------|-----------------------------------|
+| GET    | `/`              | Frontend (calculadora)            |
+| POST   | `/api/calcular`  | Calcula cashback e salva no banco |
+| GET    | `/api/historico` | Histórico de consultas por IP     |
 
 **POST `/api/calcular`** — Body:
 ```json
@@ -53,38 +56,25 @@ docker compose up -d --build
 
 Acesse: **http://localhost:8000**
 
-### Sem Docker (API local)
+### Sem Docker
 
-Pré-requisito: PostgreSQL rodando na porta 5432.
+Precisa ter PostgreSQL rodando na porta 5432.
 
 ```bash
-# Sobe só o Postgres via Docker
 docker compose up -d db
 
-# Cria venv e instala dependências
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 
-# Roda a API
 uvicorn app.main:app --reload
 ```
 
 Acesse: **http://localhost:8000**
 
-### Conexão com o Banco (DBeaver)
-
-| Campo    | Valor       |
-|----------|-------------|
-| Host     | `localhost` |
-| Port     | `5432`      |
-| Database | `cashbackdb`|
-| User     | `user`      |
-| Password | `password`  |
-
 ## Tecnologias
 
-- **Backend:** Python, FastAPI, SQLAlchemy, Databases (async)
+- **Backend:** Python, FastAPI, SQLAlchemy, Databases
 - **Banco:** PostgreSQL
 - **Frontend:** HTML, CSS, JavaScript puro
 - **Infra:** Docker, Docker Compose
